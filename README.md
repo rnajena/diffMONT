@@ -6,4 +6,4 @@ Output of diffONT is list of predicted MSP regions, containing information for t
 
 ### Install:
 
-### How to use:
+### Run:
