@@ -6,7 +6,7 @@ diffONT is a python-based tool for predicting methylation-specific PCR (MSP) pri
 ### Install:
 We recommend to use linux and miniconda for the enviroment management
 1. [Download and install Conda.](https://docs.conda.io/projects/conda/en/latest/user-guide/install/index.html)
-2. Download the enviroment yml file [diffONT.yml]()
+2. Download the enviroment yml file [diffONT.yml](https://github.com/meydaria/diffONT_paper/blob/main/diffONT.yml)
 3. Create the Conda environment. 
 
     `conda env create -f diffONT.yml`
