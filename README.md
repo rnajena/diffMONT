@@ -18,6 +18,7 @@ We recommend to use linux and miniconda for the enviroment management
 ### Run:
 Input for diffONT is a bedmethyl file, sorted by genomic position, with an additional column containing the sample name. This file can be generated using the script `preprocess.sh`, which extracts the sample name from the file name.
 The most basic usage of diffONT is via:   
+
 `python diffONT.py --bedmethylFile mergedMethylation.bed --controls ctr_1 ctr_2 --tumors tmr_1 tmr_2 --outfolder results/`
 
 The output of diffONT is a list of predicted MSP regions, containing information for the forward and reverse primer. This list might contain overlapping MSP regions, which can be collapsed with the script `groupPCRproducts.py`.
