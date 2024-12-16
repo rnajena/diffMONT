@@ -10,3 +10,5 @@ The result files for diffONT are stored in the corresponding folders.
 diffONT was compared against pycoMeth on the samples HG003 and HG004 from the GIAB consortium.
 The GIAB data can be retrieved via ftp from NCBI https://ftp-trace.ncbi.nlm.nih.gov/giab/ftp/data/AshkenazimTrio/analysis/10XGenomics_ChromiumGenome_LongRanger2.0_06202016/.
 The result files for diffONT are stored in the corresponding folder.
+
+Further result files and the code version used for the publication can be found on zenodo.org under the following DOI: 10.5281/zenodo.14501611
