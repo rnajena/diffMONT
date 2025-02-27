@@ -11,7 +11,7 @@ We recommend to use linux and miniconda for the enviroment management
 
     `conda env create -f diffONT.yml`
 
-4. Activate the Conda environment. You will need to activate the Conda environment in each terminal in which you want to use vidop.
+4. Activate the Conda environment. You will need to activate the Conda environment in each terminal in which you want to use diffONT.
 
     `conda activate diffONT`
 
