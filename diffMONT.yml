@@ -1,4 +1,4 @@
-name: diffONT
+name: diffMONT
 channels:
   - conda-forge
   - bioconda
