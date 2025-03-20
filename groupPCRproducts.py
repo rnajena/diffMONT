@@ -9,7 +9,7 @@ from operator import itemgetter
 parser = argparse.ArgumentParser(description='Extract only optimal PCR primer region per region')
 
 parser.add_argument('--pcrProductfile',  
-                    help='Text file containing the output of diffONT; a tab separated file containing informations about all PCR product regions')
+                    help='Text file containing the output of diffMONT; a tab separated file containing informations about all PCR product regions')
 
 
 def merge_overlappingIntervals(interval_list):
