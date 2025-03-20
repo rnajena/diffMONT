@@ -1,30 +1,30 @@
-# diffONT
-diffONT is a python-based tool for predicting methylation-specific PCR (MSP) primers, based on Nanopore sequencing data. Given a merged bedmethyl file, diffONT detects methylation-specific PCR primer regions, which can distinguish between two groups of samples (originally cancer patients vs. healthy controls).
+# diffMONT
+diffMONT is a python-based tool for predicting methylation-specific PCR (MSP) primers, based on Nanopore sequencing data. Given a merged bedmethyl file, diffMONT detects methylation-specific PCR primer regions, which can distinguish between two groups of samples (originally cancer patients vs. healthy controls).
 
 
 
 ### Install:
 We recommend to use linux and miniconda for the enviroment management
 1. [Download and install Conda.](https://docs.conda.io/projects/conda/en/latest/user-guide/install/index.html)
-2. Download the enviroment yml file [diffONT.yml](https://github.com/meydaria/diffONT_paper/blob/main/diffONT.yml)
+2. Download the enviroment yml file [diffMONT.yml](https://github.com/meydaria/diffMONT_paper/blob/main/diffMONT.yml)
 3. Create the Conda environment. 
 
-    `conda env create -f diffONT.yml`
+    `conda env create -f diffMONT.yml`
 
-4. Activate the Conda environment. You will need to activate the Conda environment in each terminal in which you want to use diffONT.
+4. Activate the Conda environment. You will need to activate the Conda environment in each terminal in which you want to use diffMONT.
 
-    `conda activate diffONT`
+    `conda activate diffMONT`
 
 ### Run:
-Input for diffONT is a bedmethyl file, sorted by genomic position, with an additional column containing the sample name. This file can be generated using the script `preprocess.sh`, which extracts the sample name from the file name.
-The most basic usage of diffONT is via:   
+Input for diffMONT is a bedmethyl file, sorted by genomic position, with an additional column containing the sample name. This file can be generated using the script `preprocess.sh`, which extracts the sample name from the file name.
+The most basic usage of diffMONT is via:   
 
-`python diffONT.py --bedmethylFile mergedMethylation.bed --controls ctr_1 ctr_2 --tumors tmr_1 tmr_2 --outfolder results/`
+`python diffMONT.py --bedmethylFile mergedMethylation.bed --controls ctr_1 ctr_2 --tumors tmr_1 tmr_2 --outfolder results/`
 
-The output of diffONT is a list of predicted MSP regions, containing information for the forward and reverse primer. This list might contain overlapping MSP regions, which can be collapsed with the script `groupPCRproducts.py`.
+The output of diffMONT is a list of predicted MSP regions, containing information for the forward and reverse primer. This list might contain overlapping MSP regions, which can be collapsed with the script `groupPCRproducts.py`.
 
 #### Required parameters:
-diffONT has four required parameters.  
+diffMONT has four required parameters.  
 * `--bedmethylFile`  
 The merged bedmethyl file should follow the bedmethyl [bed9+2 format](https://www.encodeproject.org/data-standards/wgbs/), with an additional last column specifying the sample names.
 * `--controls`  
