@@ -22,8 +22,8 @@ The following steps are made:
 
 
 Example:
-	python diffONT.py --bedmethylFile $data/bedmethyl/sorted.bed --tumors t0044c t0085c t0126c --controls t0099n t0025n t0045n --outfolder $data/results
-	python diffONT.py --bedmethylFile $data/bedmethyl/sorted.bed --tumors t0044c t0085c t0126c --controls t0099n t0025n t0045n --reference hg38.fa --annotation hg38.gtf --outfolder $data/results
+	python diffMONT.py --bedmethylFile $data/bedmethyl/sorted.bed --tumors t0044c t0085c t0126c --controls t0099n t0025n t0045n --outfolder $data/results
+	python diffMONT.py --bedmethylFile $data/bedmethyl/sorted.bed --tumors t0044c t0085c t0126c --controls t0099n t0025n t0045n --reference hg38.fa --annotation hg38.gtf --outfolder $data/results
 
 """
 
