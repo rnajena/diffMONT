@@ -1,4 +1,11 @@
+
+
 # diffMONT
+
+[![DOI](https://zenodo.org/badge/doi/10.5281/zenodo.18914.svg)](https://doi.org/10.5281/zenodo.14501611)
+
+<img align="right" width="250" alt="diffMONT_logo" src="https://github.com/user-attachments/assets/d77466f2-a333-4ffe-ba41-f9ac4476fdef" />
+
 diffMONT is a python-based tool for predicting methylation-specific PCR (MSP) primers, based on Nanopore sequencing data. Given a merged bedmethyl file, diffMONT detects methylation-specific PCR primer regions, which can distinguish between two groups of samples (originally cancer patients vs. healthy controls).
 
 
