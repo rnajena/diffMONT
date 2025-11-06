@@ -55,6 +55,7 @@ Optional parameters exist to adapt the requirements for the predicted MSP region
 Additionally, with the optional parameters `--boxplotData` and `--primerData` it is possible to continue the work from intermediate results.
 Further functionalities can be used by adding `--annotation` followed by an Ensembl annotation file, which will be screened for genes overlapping the predicted MSP regions (this will result in an additional output column). If the parameter `--reference` is set, followed by the reference genome, additional statistics like GC-content will be calculated and reported in additional output columns.
 
+
 ### Exemplary data for testing:
 diffMONT can be either used on publicly available data, e.g. the Benchmark Dataset RRMS 2022.07 from Oxford Nanopore Technologies (ONT) available under AWS (s3://ont-open-data/rrms_2022.07/) and described by [ONT](https://epi2me.nanoporetech.com/rrms2022.07/).
 Additionally, a minimal example of a bedmethyl file is available in the folder `/example_data/`. 
