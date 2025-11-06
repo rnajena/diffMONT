@@ -15,7 +15,7 @@ do
 	new_name="${new_name%%_*}_$i"
 	echo "New Filename - $i: $new_name"
 
-	head $bedfile | awk '{if ($11 != "nan"){print $0}}' | sed "s/$/\t$new_name/" >> mergedMethylation.bed
+	cat $bedfile | awk '{if ($11 != "nan"){print $0}}' | sed "s/$/\t$new_name/" >> mergedMethylation.bed
 	# awk '{if ($11 != "nan"){print $0}}' $bedfile | sed "s/$/\t$new_name/" 
 
 	
