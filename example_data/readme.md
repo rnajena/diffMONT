@@ -3,4 +3,4 @@
 * `methylation_data.bed`:          exemplary (in silico) methylation data for 3 control and 3 tumor samples in bedmethyl file format
 
 ## This data can be used to test diffMONT.
-`python diffMONT.py --bedmethylFile methylation_data.bed --controls ctr_1 ctr_2 ctr_3 --tumors tmr_1 tmr_2 tmr_3 --outfolder results/`
+`python diffMONT.py --bedmethylFile example_data/methylation_data.bed --controls ctr_1 ctr_2 ctr_3 --tumors tmr_1 tmr_2 tmr_3 --outfolder example_data/`
