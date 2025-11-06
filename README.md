@@ -54,3 +54,16 @@ Optional parameters exist to adapt the requirements for the predicted MSP region
 
 Additionally, with the optional parameters `--boxplotData` and `--primerData` it is possible to continue the work from intermediate results.
 Further functionalities can be used by adding `--annotation` followed by an Ensembl annotation file, which will be screened for genes overlapping the predicted MSP regions (this will result in an additional output column). If the parameter `--reference` is set, followed by the reference genome, additional statistics like GC-content will be calculated and reported in additional output columns.
+
+### Exemplary data for testing:
+diffMONT can be either used on publicly available data, e.g. the Benchmark Dataset RRMS 2022.07 from Oxford Nanopore Technologies (ONT) available under AWS (s3://ont-open-data/rrms_2022.07/) and described by [ONT](https://epi2me.nanoporetech.com/rrms2022.07/).
+Additionally, a minimal example of a bedmethyl file is available in the folder `/example_data/`. 
+
+### Application and Publication
+For a detailed description and benchmarking of diffMONT, see our [preprint on BioRxiv (2025)](https://www.biorxiv.org/content/10.1101/2025.02.17.638597v1.abstract).     
+For the application of diffMONT on clinical data, see our [publication in Clinical Epigenetics (2025)](https://link.springer.com/article/10.1186/s13148-025-01960-7).
+
+### Citation
+When using diffMONT helps you, please cite:      
+[Meyer *et al.*, "Nanopore sequencing-derived methylation biomarker prediction for methylation-specific PCR in patients with head and neck squamous cell carcinoma", Clinical Epigenetics (2025)](https://link.springer.com/article/10.1186/s13148-025-01960-7)
+
