@@ -55,6 +55,30 @@ Optional parameters exist to adapt the requirements for the predicted MSP region
 Additionally, with the optional parameters `--boxplotData` and `--primerData` it is possible to continue the work from intermediate results.
 Further functionalities can be used by adding `--annotation` followed by an Ensembl annotation file, which will be screened for genes overlapping the predicted MSP regions (this will result in an additional output column). If the parameter `--reference` is set, followed by the reference genome, additional statistics like GC-content will be calculated and reported in additional output columns.
 
+### Output file format:
+The output file pcrProducts.tsv has the following output columns:
+chromosome	strand	start_fw	end_fw	CGs_fw	length_fw	score_fw	start_rev	end_rev	CGs_rev	length_rev	score_rev	length_product	score_product	cov_contr	cov_tumor	meth_contr	meth_tumor
+
+| **column name**       | **meaning**                                                     |
+|-----------------------|-----------------------------------------------------------------|
+| chromosome            | chromosome on which the MSP region was identified               |
+| strand                | strand on which the MSP region was identified                   |
+| start_fw              | first poistion of the first primer in pair                      |
+| end_fw                | second poistion of the first primer in pair                     |
+| CGs_fw                | number of CpGs of interest in the first primer in pair          |
+| length_fw             | length of the first primer in pair                              |
+| score_fw              | score of the first primer in pair                               |
+| start_rev             | first poistion of the second primer in pair                     |
+| end_rev               | second poistion of the second primer in pair                    |
+| CGs_rev               | number of CpGs of interest in the second primer in pair         |
+| length_rev            | length of the second primer in pair                             |
+| score_rev             | score of the second primer in pair                              |
+| length_product        | length of the predicted MSP region (end_rev-start_fw)           |
+| score_product         | MSP region score (score_fw + score_rev)                         |
+| cov_contr             | mean coverage of control samples over both primers              |
+| cov_tumor             | mean coverage of control samples over both primers              |
+| meth_contr            | mean methylation of control samples over both primers           |
+| meth_tumor            | mean methylation of control samples over both primers           |
 
 ### Exemplary data for testing:
 diffMONT can be either used on publicly available data, e.g. the Benchmark Dataset RRMS 2022.07 from Oxford Nanopore Technologies (ONT) available under AWS (s3://ont-open-data/rrms_2022.07/) and described by [ONT](https://epi2me.nanoporetech.com/rrms2022.07/).
