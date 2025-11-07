@@ -56,8 +56,8 @@ Additionally, with the optional parameters `--boxplotData` and `--primerData` it
 Further functionalities can be used by adding `--annotation` followed by an Ensembl annotation file, which will be screened for genes overlapping the predicted MSP regions (this will result in an additional output column). If the parameter `--reference` is set, followed by the reference genome, additional statistics like GC-content will be calculated and reported in additional output columns.
 
 ### Output file format:
-The output file pcrProducts.tsv has the following output columns:
-chromosome	strand	start_fw	end_fw	CGs_fw	length_fw	score_fw	start_rev	end_rev	CGs_rev	length_rev	score_rev	length_product	score_product	cov_contr	cov_tumor	meth_contr	meth_tumor
+The output file pcrProducts.tsv contains data for both predicted primers (fw and rev), and the total MSP region.
+The result data is stored in the following output columns:
 
 | **column name**       | **meaning**                                                     |
 |-----------------------|-----------------------------------------------------------------|
