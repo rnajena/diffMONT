@@ -10,7 +10,7 @@ daria.meyer@uni-jena.de
 This script extracts regions which are differentially methylated between two conditions.
 
 Input: 
-* merged and sorted bedmethyl samples with data for all samples (merged by chromosome and position)
+* merged and sorted bedmethyl samples with data for all samples (sorted by chromosome and position)
 
 The following steps are made:
 * For each CpG dinucleotide: 
@@ -20,11 +20,9 @@ The following steps are made:
 * Find MSP primers with 18-24 nt length
 * Find MSP region = combination of MSP primers, spanning a region of length 60-400 nt (with a sliding window approach)
 
-
 Example:
-	python diffMONT.py --bedmethylFile $data/bedmethyl/sorted.bed --tumors t0044c t0085c t0126c --controls t0099n t0025n t0045n --outfolder $data/results
+	python diffMONT.py --bedmethylFile $data/bedmethyl/sorted.bed --tumors tmr_1 tmr_2 tmr_3 --controls ctr_1 ctr_2 ctr_3 --outfolder $data/results
 	python diffMONT.py --bedmethylFile $data/bedmethyl/sorted.bed --tumors t0044c t0085c t0126c --controls t0099n t0025n t0045n --reference hg38.fa --annotation hg38.gtf --outfolder $data/results
-
 """
 
 import numpy as np
@@ -37,6 +35,7 @@ from collections import Counter
 # Instantiate the parser
 parser = argparse.ArgumentParser(description='Get differentially methylated regions')
 
+## Required parameters
 ## Define input
 parser.add_argument('--bedmethylFile', required=True, 
 					help=' merged and sorted bedmethyl file')
@@ -48,12 +47,19 @@ parser.add_argument('--tumors', required=True, nargs='+',
 parser.add_argument('--outfolder', required=True,  
                     help='outfolder in which the results will be stored')
 
+## Optional parameters
 ## Define maximum control methylation per sample per position
 parser.add_argument('--maxMethControl', default = 10,
                     help='maximum average methylation allowed for the control sample')
 ## Define minimum amount of differently methylated cytosines  in primer
 parser.add_argument('--minCpGs', default = 3,
                     help='minimum amount of differentially methylated cytosines in primer')
+## Define minimum coverage for the control samples
+parser.add_argument('--minCtrCov', default = 3,
+                    help='minimum coverage for control samples')
+## Define minimum number of control samples with sufficient coverage
+parser.add_argument('--minCtrls', default = 0.5,
+                    help='minimum number of control samples with sufficient coverage (as fraction of total control samples)')
 ## Define primer length
 parser.add_argument('--minPrimerLength', default = 18,
                     help='minimum length required for primers')
@@ -161,28 +167,33 @@ def getRegions(bedMethyFile, maxMethControl, controls, tumors):
 					tmp.append([chro, pos, strand, coverage, methylation, sample])
 					## Set keep to false if methylated in any of the controls above threshold
 					if sample in controls:
-						if methylation > maxMethControl:
+						if methylation > maxMethControl:  
 							keep = False
 				else: 
 					## If not methylated the control samples
 					if keep:
-						## Calculate stats for previous position (= data from tmp)
+						# print("#############################")
 						data = pd.DataFrame(tmp, columns = ['chro', 'pos', 'strand', 'coverage', 'methylation', 'sample'])
-						# print(data.info())
+						## check for all control samples i) methylation is not nan and ii) coverage is at least minCtrCov
+						tmp_ctrls = [sublist for sublist in tmp if (sublist[5] in controls and not(math.isnan(sublist[4])) and sublist[3] >= minCtrCov)]
 
-						tmp_boxplot = calcBoxplotStats(data, controls, tumors)
-						tumor_median = tmp_boxplot[8]
-						control_upper_whisker = tmp_boxplot[6]
+						## check if enough control samples fulfill the requirements
+						if(len(tmp_ctrls)/len(controls) >= minCtrls):
+							data = pd.DataFrame(tmp, columns = ['chro', 'pos', 'strand', 'coverage', 'methylation', 'sample'])
+							## Calculate stats for previous position (= data from tmp)
+							tmp_boxplot = calcBoxplotStats(data, controls, tumors)
+							tumor_median = tmp_boxplot[8]
+							control_upper_whisker = tmp_boxplot[6]
 
-						## Check if median from tumor sample is higher than max from control
-						if (tumor_median > control_upper_whisker): ## False if one of the values is nan.
-							## If all criteria are fulfilled, add data to final lists boxplotData and resList
-							boxplotData.append(tmp_boxplot) 
-							resList.extend(tmp)
-							for value in tmp_boxplot:
-								outstream.write(f"{value}\t")
-							outstream.write(f"\n")
-							outstream.flush()
+							## Check if median from tumor sample is higher than max from control
+							if (tumor_median > control_upper_whisker): ## False if one of the values is nan.
+								## If all criteria are fulfilled, add data to final lists boxplotData and resList
+								boxplotData.append(tmp_boxplot) 
+								resList.extend(tmp)
+								for value in tmp_boxplot:
+									outstream.write(f"{value}\t")
+								outstream.write(f"\n")
+								outstream.flush()
 
 					## Always initialize tmp, old_chro, old_pos, keep 
 					tmp = [[chro, pos, strand, coverage, methylation, sample]]
@@ -218,13 +229,8 @@ def calcBoxplotStats(data, controls, tumors):
 	
 	## Extract only control samples into pandas dataframe
 	df_control = data.loc[data['sample'].isin(controls)]
-	# print(df_control)
 	control_coverage = ';'.join(str(x) for x in df_control['coverage'].tolist())
-	# print("coverage:")
-	# print(control_coverage)
 	control_methylation = ';'.join(str(x) for x in df_control['methylation'].tolist())
-	# print("methylation:")
-	# print(control_methylation)
 	control_samples = ';'.join(str(x) for x in df_control['sample'].tolist())
 
 	## Calculate boxplot statistics for control samples
@@ -238,7 +244,6 @@ def calcBoxplotStats(data, controls, tumors):
 
 	## Extract only tumor samples into pandas dataframe
 	df_tumor = data.loc[data['sample'].isin(tumors)]
-	# print(df_tumor)
 	
 	tumor_coverage = ';'.join(str(x) for x in df_tumor['coverage'].tolist())
 	tumor_methylation = ';'.join(str(x) for x in df_tumor['methylation'].tolist())
@@ -289,12 +294,8 @@ def calcPrimerScore(boxplotData, primer, norms):
 	# print(boxplotData.head())
 	# print(boxplotData.info())
 	score = 0
-	# print('\t'.join(str(x) for x in primer))
-	# print(boxplotData.loc[(boxplotData['chro'] == primer[0]) & (boxplotData['strand'] == primer[1])].iloc[primer[2]:primer[3]+1])
 	data = boxplotData.loc[(boxplotData['chro'] == primer[0]) & (boxplotData['strand'] == primer[1]) & (boxplotData['pos'] >= primer[2]) & (boxplotData['pos'] <= primer[3])]
-	# print(data)
 	sample = data['tumor_samples'].str.split(';').tolist()
-	# print(sample)
 
 	## Calculate average coverage over all positions in tumor samples
 	coverage_tumor = data['tumor_coverage'].str.split(';').tolist()
@@ -320,13 +321,6 @@ def calcPrimerScore(boxplotData, primer, norms):
 	# print(methylation)
 	for i in range(len(coverage_tumor)): ## for every tumor sample
 		for j in range(len(coverage_tumor[i])): ## for every CpG dinulceotide
-			## TODO: Check if length of methylation, coverage and sample are the same? Currently would only throgh error if not the case
-			# print(sample)
-			# print(f"PRIMER:\t{primer[2]}")
-			# print(f"sample: {sample[i][j]}")
-			# print(f"coverage_tumor: {coverage_tumor[i][j]}")
-			# print(f"methylation: {methylation[i][j]}")
-			# print(f"norm: {norms[sample[i][j]]}")
 
 			## Calculate score for each position and each tumor sample and sum up
 			tmp = (float(coverage_tumor[i][j])/norms[sample[i][j]]) * float(methylation[i][j]) * 1000000 
@@ -541,6 +535,8 @@ tumors = args.tumors
 outFolder = args.outfolder
 
 minCpGs = int(args.minCpGs)   # minimum amount of differentially methylated cytosines in primer
+minCtrCov = int(args.minCtrCov) 	# minimum coverage for the control samples
+minCtrls = float(args.minCtrls)		# minimum number of control samples with sufficient coverage (fraction of total control samples)
 maxMethControl = float(args.maxMethControl)   # max control methylation
 minPrimerLength = int(args.minPrimerLength)	  # min primer length
 maxPrimerLength = int(args.maxPrimerLength)   # max primer length
@@ -640,6 +636,7 @@ else:
 	## Calculate coverage normalization values
 	print("Calculate norms ...")
 	norms = interestingCpGs.groupby(['sample'])['coverage'].sum()
+	# print(norms)
 
 	## Select regions which fulfill criteria to be PCR product region of interest
 	print("Extract primer ...")
@@ -711,4 +708,3 @@ if (annotation_given):
 
 
 ## TODO: make usage of primer data possible
-
